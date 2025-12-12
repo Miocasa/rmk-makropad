@@ -1,16 +1,21 @@
 [package]
-name = "nrf-usb-3x3"
+name = "rmk-nrf52840"
 version = "0.2.0"
 authors = ["Haobo Gu <haobogu@outlook.com>"]
 description = "Keyboard firmware written in Rust"
 homepage = "https://github.com/haobogu/rmk"
 repository = "https://github.com/haobogu/rmk"
-readme = "README.md"
-edition = "2021"
+readme = "../../README.md"
+edition = "2024"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-rmk = { version = "0.8", features = ["async_matrix", "nrf52840_ble", "adafruit_bl"] }
+rmk = { path = "../../../rmk", features = [
+    "async_matrix",
+    "nrf52840_ble",
+    "adafruit_bl",
+    "controller",
+] }
 nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "11d5c3c", features = [
     "defmt",
     "peripheral",
@@ -21,13 +26,25 @@ nrf-mpsl = { git = "https://github.com/alexmoon/nrf-sdc", rev = "11d5c3c", featu
     "critical-section-impl",
     "nrf52840",
 ] }
-bt-hci = { version = "0.6", default-features = false, features = ["defmt"] }
+bt-hci = { version = "0.6", features = ["defmt"] }
 
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.5"
 embassy-time = { version = "0.5", features = ["tick-hz-32_768", "defmt"] }
-embassy-nrf = { version = "0.8", features = ["defmt", "nrf52840", "time-driver-rtc1", "gpiote", "unstable-pac", "nfc-pins-as-gpio", "time"] }
-embassy-executor = { version = "0.9", features = ["defmt", "arch-cortex-m", "executor-thread"] }
+embassy-nrf = { version = "0.8", features = [
+    "defmt",
+    "nrf52840",
+    "time-driver-rtc1",
+    "gpiote",
+    "unstable-pac",
+    "nfc-pins-as-gpio",
+    "time",
+] }
+embassy-executor = { version = "0.9", features = [
+    "defmt",
+    "arch-cortex-m",
+    "executor-thread",
+] }
 defmt = "1.0"
 defmt-rtt = "1.0"
 panic-probe = { version = "1.0", features = ["print-defmt"] }
@@ -36,14 +53,7 @@ static_cell = "2"
 rand = { version = "0.8.4", default-features = false }
 rand_core = { version = "0.6" }
 rand_chacha = { version = "0.3", default-features = false }
-
-
-nrf52840-hal = "0.19.0"
-embedded-hal = "1"
-ssd1306 = "0.10"
-embedded-graphics = "0.8"
-display-interface = "0.5"
-display-interface-i2c = "0.5"
+async-trait = "0.1.88"
 
 
 [build-dependencies]
@@ -52,7 +62,7 @@ json = "0.12"
 const-gen = "1.6"
 
 [[bin]]
-name = "nrf-usb-3x3"
+name = "rmk-nrf52840"
 test = false
 bench = false
 

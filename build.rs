@@ -18,26 +18,8 @@ use std::{env, fs};
 use const_gen::*;
 use xz2::read::XzEncoder;
 
-// use embassy_nrf::config::Config;
-// use embassy_nrf::peripherals::TWISPI0;
-// use embassy_nrf::twim::{self, Twim};
-// use embassy_time::Timer;
-
-// use embedded_hal_async::i2c::I2c; // for async usage
-
 fn main() {
-    // let p = embassy_nrf::init(Config::default());
-
-    // // Pick your SDA/SCL pins (replace with your actual pins)
-    // let i2c = Twim::new(
-    //     p.TWISPI0,
-    //     p.P1_15, // SDA
-    //     p.P1_14, // SCL
-    //     twim::Config::default(),
-    // );
-
     // Generate vial config at the root of project
-    println!("cargo:rerun-if-changed=vial.json");
     generate_vial_config();
 
     // Put `memory.x` in our output directory and ensure it's
@@ -55,8 +37,6 @@ fn main() {
     // `memory.x` is changed.
     println!("cargo:rerun-if-changed=memory.x");
 
-    println!("cargo:rerun-if-changed=keyboard.toml");
-
     // Specify linker arguments.
 
     // `--nmagic` is required if memory section addresses are not aligned to 0x10000,
@@ -69,13 +49,11 @@ fn main() {
 
     // Set the extra linker script from defmt
     println!("cargo:rustc-link-arg=-Tdefmt.x");
-
-    // Use flip-link overflow check: https://github.com/knurling-rs/flip-link
-    println!("cargo:rustc-linker=flip-link");
 }
 
 fn generate_vial_config() {
     // Generated vial config file
+    println!("cargo:rerun-if-changed=vial.json");
     let out_file = Path::new(&env::var_os("OUT_DIR").unwrap()).join("config_generated.rs");
 
     let p = Path::new("vial.json");
